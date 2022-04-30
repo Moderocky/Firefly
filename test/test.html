@@ -5,15 +5,44 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        span {
+            padding: 1px 2px;
+            border-radius: 2px;
+        }
+        span.type-keyword {
+            background-color: #a2b8e1;
+        }
+        span.type-number {
+            background-color: #a2e1bb;
+        }
+        span.type-letter {
+            background-color: #e1b1a2;
+        }
+    </style>
 </head>
 <body>
 
 <script type="module">
 
-    import {Context, Language} from "../firefly.mjs";
-    new Context();
+    import {Context, Element, Highlighter, Language, Node} from "../firefly.mjs";
+    const language = new Language(
+        new Element('keyword', /bean/,
+            new Element('letter', /ea/)
+        ),
+        new Element('number', /seven/,
+            new Element('letter', /e/)
+        ),
+        new Element('letter', /i/)
+    );
+    Highlighter.register(language);
+    const text = `blob bean six seven bean eight nine`;
+    const context = new Highlighter().parse(text, language);
+    console.log(Node.ofHTML('hello there!', 'span', 'blob', 'bean') + '');
+    document.body.appendChild(document.createTextNode(text));
+    document.body.appendChild(context.builder);
+    console.log(context.builder.outerHTML);
 
-    console.log('hello');
 </script>
 </body>
 </html>
