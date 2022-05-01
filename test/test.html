@@ -4,42 +4,72 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200;400&display=swap" rel="stylesheet">
     <title>Document</title>
     <style>
+        body {
+            background-color: #1c1c31;
+            color: #818383;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 4em;
+        }
+        div + div {
+            margin-top: 1em;
+        }
         span {
-            padding: 1px 2px;
-            border-radius: 2px;
+            /*padding: 1px 2px;*/
+            /*margin: 1px;*/
+            /*border-radius: 2px;*/
         }
         span.type-keyword {
-            background-color: #a2b8e1;
+            color: #a2b8e1;
         }
         span.type-number {
-            background-color: #a2e1bb;
+            color: #a2e1bb;
         }
         span.type-letter {
-            background-color: #e1b1a2;
+            color: #e1b1a2;
+        }
+        span.type-question {
+            color: #f18563;
+        }
+        span.type-thing {
+            color: #c781ef;
         }
     </style>
 </head>
 <body>
 
+
 <script type="module">
 
     import {Context, Element, Highlighter, Language, Node} from "../firefly.mjs";
     const language = new Language(
-        new Element('keyword', /bean/,
+        new Element('keyword', /\b[ue]t\b/,
             new Element('letter', /ea/)
         ),
-        new Element('number', /seven/,
-            new Element('letter', /e/)
+        new Element('number', /\bvolup[\w]+\b/,
+            new Element('letter', /[aeiou]/)
         ),
-        new Element('letter', /i/)
+        new Element('thing', /i[ua]m\b/),
+        new Element('question', /\bqu(\w)\w*\b/,
+            new Element('letter', /\w+/),
+            new Element('letter', /a/)
+        )
     );
     Highlighter.register(language);
-    const text = `blob bean six seven bean eight nine`;
+    const text = `Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+    totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+    Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+    sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+    Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,
+    sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.`;
     const context = new Highlighter().parse(text, language);
-    console.log(Node.ofHTML('hello there!', 'span', 'blob', 'bean') + '');
-    document.body.appendChild(document.createTextNode(text));
+    const div = document.createElement('div');
+    div.innerHTML = text;
+    document.body.appendChild(div);
     document.body.appendChild(context.builder);
     console.log(context.builder.outerHTML);
 

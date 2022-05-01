@@ -84,13 +84,14 @@ class Element {
             if (!element) throw new Error('Fewer sub-elements than groups in element: ' + this);
             context.outer_match = result;
             context.current_text = result[i];
-            const result = element.match(context);
-            context.current_text = text.substring(result.index + result[0].length);
-            if (!result) return reset();
-            if (result.index <= ledger) continue;
-            const textNode = document.createTextNode(text.substring(ledger+1, result.index));
+            const childResult = element.match(context);
+            context.current_text = result[i];
+            if (!childResult) return reset();
+            const childBegin = text.indexOf(result[i], ledger), childEnd = childBegin + result[i].length;
+            context.current_text = text.substring(childEnd);
+            const textNode = document.createTextNode(text.substring(ledger, childBegin));
             context.current.insertBefore(textNode, context.current.lastChild);
-            ledger = result.index + result[0].length;
+            ledger = childEnd;
         }
         let match = false;
         do {
