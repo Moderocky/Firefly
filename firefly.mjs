@@ -1,3 +1,41 @@
+
+class EscapeRule {
+
+
+
+    static create() {
+        return new EscapeRule();
+    }
+
+}
+
+class PairCounter {
+    constructor(opening, closing, ...escapeRules) {
+        this.opening = opening;
+        this.closing = closing;
+        this.rules = [...escapeRules];
+    }
+
+    count(text, until, start = 0) {
+        const string = text.substring(start, until || text.length);
+        const rules = [];
+        for (const rule of this.rules) {
+
+        }
+        let count, index;
+        for (index = 0, count = 0; index < string.length; index++) {
+            if (string[index] === this.opening && (this.opening === this.closing && count !== 0)) count++;
+            else if (string[index] === this.closing) count--;
+        }
+        return count;
+    }
+}
+// todo
+const text = `hello {there { :) } }`;
+console.log(new PairCounter('{', '}').count(text));
+console.log(new PairCounter('{', '}').count(text, text.length-2));
+// todo
+
 class Node {
     toString() { return "ERROR"; }
 
@@ -133,6 +171,7 @@ class Language {
         let ledger = 0;
         const weighting = new Map(), checker = [];
         for (let element of this.elements) {
+            if (!element.isValid(context)) continue;
             const result = element.regex.exec(text);
             if (result == null) continue;
             checker.push(result);
@@ -170,7 +209,7 @@ class Context {
     expect_start = false;
     position = 0;
     flags = [];
-    builder = document.createElement('div');
+    builder = document.createElement('pre');
     current = this.builder;
 
     hasFlag = (flag) => this.flags.includes(flag);

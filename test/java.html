@@ -1,0 +1,79 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200;400&display=swap" rel="stylesheet">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #1c1c31;
+            color: #818383;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 4em;
+        }
+        pre {
+            font-size: 1.3em;
+        }
+        pre + pre {
+            margin-top: 1em;
+        }
+        span {
+            /*padding: 1px 2px;*/
+            /*margin: 1px;*/
+            /*border-radius: 2px;*/
+        }
+        span.type-keyword {
+            color: #ee8dfd;
+        }
+        span.type-class {
+            color: #acb5d7;
+        }
+        span.type-method {
+        }
+        span.type-method .type-method-name {
+            color: #c817dc;
+        }
+        span .type-punctuation {
+            color: #f3c42b;
+        }
+        span.type-number {
+            color: #a2e1bb;
+        }
+        span.type-letter {
+            color: #e1b1a2;
+        }
+        span.type-question {
+            color: #f18563;
+        }
+        span.type-thing {
+            color: #c781ef;
+        }
+    </style>
+</head>
+<body>
+
+
+<script type="module">
+
+    import {Highlighter} from "../firefly.mjs";
+    import {Java} from "../lang/java.mjs";
+    const text = `
+    public final class Thing implements Blob {
+        private void test() {
+        }
+    }
+    `;
+    const context = new Highlighter().parse(text, Java.language);
+    const div = document.createElement('pre');
+    div.innerHTML = text;
+    document.body.appendChild(div);
+    document.body.appendChild(context.builder);
+    console.log(context.builder.outerHTML);
+
+</script>
+</body>
+</html>

@@ -16,6 +16,7 @@ const method = new Element('method', /\b((?:[a-zA-Z_$][a-zA-Z\d_$]*\.)*[a-zA-Z_$
 
 const openingBrace = new Element('punctuation', /{/);
 const closingBrace = new Element('punctuation', /}/);
+closingBrace.isValid = (context) => context['nest'] && context['nest'] > 0;
 
 const classDeclaration = new Element('class-declaration', /^([^{]+)({)([\s\S]*)(})\s*$/,
     new Element( 'class-header', /^[^{]+$/,
